@@ -3,10 +3,14 @@ package net.cherryleaves.whitetails_werewolf;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import net.cherryleaves.whitetails_werewolf.classic_config.potion;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 
@@ -15,7 +19,8 @@ public class OriginalItem {
     ItemStack bow = setItem(Material.BOW, Component.text("弓"), BOW_LORE, true, 1);
     ItemStack arrow = setItem(Material.ARROW, Component.text("矢"), ARROW_LORE, false, 1);
     ItemStack steak = setItem(Material.COOKED_BEEF, Component.text("ステーキ"), STEAK_LORE, false, 5);
-    ItemStack potion = setItem(Material.POTION, Component.text("透明化のポーション"), POTION_LORE, false, 1);
+    // ItemStack potion = setItem(Material.POTION, Component.text("透明化のポーション"), POTION_LORE, false, 1);
+    ItemStack potion = new potion().makePotion(Color.fromRGB(230, 230, 250), Component.text("透明化"), PotionEffectType.INVISIBILITY, 20 * 15, 0, false, POTION_LORE);
     ItemStack grenade = setItem(Material.SNOWBALL, Component.text("スタングレネード"), GRENADE_LORE, false, 1);
     ItemStack trident = setItem(Material.TRIDENT, Component.text("怨念の槍"), TRIDENT_LORE, true, 1);
     ItemStack wolf_axe = setItem(Material.STONE_AXE, Component.text("人狼の斧").color(NamedTextColor.RED), AXE_LORE, true, 1);

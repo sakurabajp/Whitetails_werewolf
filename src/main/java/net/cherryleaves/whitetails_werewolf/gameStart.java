@@ -5,10 +5,10 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.title.TitlePart;
-import net.kyori.adventure.util.HSVLike;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -116,9 +116,14 @@ public class gameStart {
             }
             teamVP.addPlayer(VampireTeamPlayers);
         }
+        new System().changeGameRule();
         for (Player p : Bukkit.getOnlinePlayers()) {
             ALLPlayerCount++;
             p.setGameMode(GameMode.ADVENTURE);
+            Objects.requireNonNull(p.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(40.0);
+            p.setHealth(40.0);
+            p.setFoodLevel(30);
+            p.addPotionEffect(new PotionEffect(PotionEffectType.INSTANT_HEALTH, 10, 80, true, false));
             p.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 10, 80, true, false));
             p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 10, 80, true, false));
             p.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 100, 5, true, false));

@@ -23,20 +23,29 @@ public class System implements Listener {
             arrow.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
         }
     }
+    
+    World world = Objects.requireNonNull(Bukkit.getWorld("world"));
 
-    public void changeNight() {
-        World world = Bukkit.getWorld("world");
-        spawnSkeletonAtRandomStand(10);
+    public void changeGameRule(){
         if (world != null) {
-            world.setTime(18000); // midnight = 18000 ticks
+            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+            world.setGameRule(GameRule.DO_MOB_LOOT, false);
+            world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
+            world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
         }
     }
 
+    public void changeNight() {
+        spawnSkeletonAtRandomStand(10);
+        world.setTime(18000); // midnight = 18000 ticks
+    }
+
     public void changeDay() {
-        World world = Bukkit.getWorld("world");
-        if (world != null) {
-            world.setTime(6000); // midnight = 18000 ticks
-        }
+        world.getEntities().stream()
+                .filter(entity -> entity instanceof Skeleton)
+                .filter(entity -> entity.getScoreboardTags().contains("game_skeleton"))
+                .forEach(Entity::remove);
+        world.setTime(6000); // midnight = 18000 ticks
     }
 
     public void spawnSkeletonAtRandomStand(int count) {
@@ -89,12 +98,20 @@ public class System implements Listener {
     
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
-        if (!(event.getEntity() instanceof Skeleton skeleton)) return;
-        if (!skeleton.getScoreboardTags().contains("game_skeleton")) return;
-        if (skeleton.getKiller() == null) return;
-        Random random = new Random();
-        if (random.nextDouble() < 0.50) {
-            skeleton.getKiller().getInventory().addItem(new ItemStack(Material.EMERALD, 1));
+        if (event.getEntity().getKiller() != null) {
+            if (event.getEntity() instanceof Skeleton skeleton) {
+                if (skeleton.getScoreboardTags().contains("game_skeleton")) {
+                    Random random = new Random();
+                    if (random.nextDouble() < 0.50) {
+                        skeleton.getKiller().getInventory().addItem(new ItemStack(Material.EMERALD, 1));
+                        event.setDroppedExp(0);
+                    }
+                }
+            }
+            else if (event.getEntity() instanceof Player player) {
+                player.setGameMode(GameMode.SPECTATOR);
+                // ここに役職ごとの処理を入れる
+            }
         }
     }
 }

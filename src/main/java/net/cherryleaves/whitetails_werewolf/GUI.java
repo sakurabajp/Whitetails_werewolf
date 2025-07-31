@@ -164,7 +164,7 @@ public class GUI implements Listener {
                     }
                     openGUI(GUIClickedPlayer);
                 } else if (clickedItem.getType() == Material.TOTEM_OF_UNDYING) {
-                    new gameStart().GameStart();
+                    gameStartInstance.GameStart();
                 } else if(clickedItem.getType() == Material.FIRE_CORAL || clickedItem.getType() == Material.BUBBLE_CORAL || clickedItem.getType() == Material.TUBE_CORAL) {
                     GUIClickedPlayer.sendMessage(Component.text("サンゴに触らないで！！").color(NamedTextColor.AQUA));
                     GUIClickedPlayer.playSound(GUIClickedPlayer.getLocation(), Sound.ENTITY_RABBIT_DEATH, 1.0f, 1.2f);

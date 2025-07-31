@@ -78,44 +78,44 @@ public class gameStart {
         Team teamVP = scoreboardVP.registerNewTeam("vampire");
         for (Player playerACC : Bukkit.getOnlinePlayers()) {
             // playerACC.sendMessage("貴方を村人チームに追加しました");
-            teamV.addPlayer(playerACC);
+            teamV.addEntry(playerACC.getName());
         }
-        for (int i = BeforeWolfPlayerCount; i > 0; i -= 1) {
+        // 人狼選択部分
+        for (int i = BeforeWolfPlayerCount; i > 0; i--) {
             Random random = new Random();
             Player WolfTeamPlayers = Players.get(random.nextInt(Players.size()));
             if (teamW.hasEntry(WolfTeamPlayers.getName())) {
-                // WolfTeamPlayers.sendMessage("貴方はすでに人狼チームに所属しているため再抽選が行われます");
-                return;
+                // すでに人狼チームの場合は再試行（iを増やして再度ループ）
+                i++;
+                continue; // returnではなくcontinueを使用
             }
-            teamW.addPlayer(WolfTeamPlayers);
-            // WolfTeamPlayers.sendMessage("貴方は人狼に選ばれました");
+            teamW.addEntry(WolfTeamPlayers.getName()); // 一貫してaddEntryを使用
         }
-        for (int i = BeforeMadmanPlayerCount; i > 0; i -= 1) {
+
+        // 狂人選択部分も同様に修正
+        for (int i = BeforeMadmanPlayerCount; i > 0; i--) {
             Random random = new Random();
             Player MadmanTeamPlayers = Players.get(random.nextInt(Players.size()));
-            if (teamM.hasEntry(MadmanTeamPlayers.getName())) {
-                return;
-            } else if (teamW.hasEntry(MadmanTeamPlayers.getName())) {
-                return;
+            if (teamM.hasEntry(MadmanTeamPlayers.getName()) ||
+                    teamW.hasEntry(MadmanTeamPlayers.getName())) {
+                i++;
+                continue; // returnではなくcontinueを使用
             }
-            teamM.addPlayer(MadmanTeamPlayers);
-            // MadmanTeamPlayers.sendMessage("貴方は狂人に選ばれました");
+            teamM.addEntry(MadmanTeamPlayers.getName()); // 一貫してaddEntryを使用
         }
-        for (int i = BeforeVampirePlayerCount; i > 0; i -= 1) {
+
+        for (int i = BeforeVampirePlayerCount; i > 0; i--) {
             Random random = new Random();
             Player VampireTeamPlayers = Players.get(random.nextInt(Players.size()));
-            if (teamM.hasEntry(VampireTeamPlayers.getName())) {
-                return;
-            }if (teamW.hasEntry(VampireTeamPlayers.getName())) {
-                return;
-            }if (teamVP.hasEntry(VampireTeamPlayers.getName())) {
-                return;
+            if (teamM.hasEntry(VampireTeamPlayers.getName()) ||
+                    teamW.hasEntry(VampireTeamPlayers.getName()) ||
+                    teamVP.hasEntry(VampireTeamPlayers.getName())) {
+                i++;
+                continue; // returnではなくcontinueを使用
             }
-            else if (teamVP.hasEntry(VampireTeamPlayers.getName())) {
-                return;
-            }
-            teamVP.addPlayer(VampireTeamPlayers);
+            teamVP.addEntry(VampireTeamPlayers.getName()); // 一貫してaddEntryを使用
         }
+
         new System().changeGameRule();
         for (Player p : Bukkit.getOnlinePlayers()) {
             ALLPlayerCount++;
@@ -153,7 +153,7 @@ public class gameStart {
                     .append(Component.text(teamVP.getEntries().size()).color(NamedTextColor.GOLD).decoration(TextDecoration.BOLD, false)));
             p.sendMessage(Component.text("村人　").color(NamedTextColor.GREEN).decoration(TextDecoration.BOLD, true)
                     .append(Component.text(" : ").color(NamedTextColor.WHITE).decoration(TextDecoration.BOLD, false))
-                    .append(Component.text(teamVP.getEntries().size()).color(NamedTextColor.GOLD).decoration(TextDecoration.BOLD, false)));
+                    .append(Component.text(teamV.getEntries().size()).color(NamedTextColor.GOLD).decoration(TextDecoration.BOLD, false)));
             p.sendMessage(Component.text(""));
             if (teamV.hasEntry(p.getName())) {
                 p.sendMessage(Component.text("あなたの役職は").color(NamedTextColor.WHITE)

@@ -17,6 +17,7 @@ public class Command {
         registerChangeTimeCommand();
         registerStartCommand();
         registerStopCommand();
+        registerGetSignCommand();
     }
     private void registerSkeletonCommand() {
         org.bukkit.command.Command Command = new org.bukkit.command.Command("skeleton-spawn") {
@@ -107,6 +108,23 @@ public class Command {
                     p.sendTitlePart(TitlePart.TITLE, Component.text("ゲームを強制終了しました").color(NamedTextColor.WHITE).decorate(TextDecoration.BOLD));
                     p.sendTitlePart(TitlePart.SUBTITLE, Component.text(""));
                     new gameEnd().endGame();
+                    return true;
+                }
+            }
+        };
+        Command.setDescription("game stop");
+        new Whitetails_werewolf().getServer().getCommandMap().register(MyCommand, Command);
+    }
+    private void registerGetSignCommand() {
+        org.bukkit.command.Command Command = new org.bukkit.command.Command("get-sign") {
+            @Override
+            public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String @NotNull [] args) {
+                if (!(sender instanceof Player p) || !sender.isOp()) {
+                    sender.sendMessage(NamedTextColor.RED + "You don't have permission to use this command.");
+                    return true;
+                }
+                else {
+                    new player_sign().getSign(p);
                     return true;
                 }
             }

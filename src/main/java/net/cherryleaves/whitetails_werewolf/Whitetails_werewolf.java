@@ -20,6 +20,7 @@ public final class Whitetails_werewolf extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new setVillager(), this);
         getServer().getPluginManager().registerEvents(System.getInstance(), this);
         getServer().getPluginManager().registerEvents(new GUI(), this);
+        getServer().getPluginManager().registerEvents(new player_sign(), this);
         new systemTimer(this);
         new message().println();
         new Command().AlliRegister();

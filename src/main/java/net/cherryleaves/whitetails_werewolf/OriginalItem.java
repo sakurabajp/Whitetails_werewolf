@@ -28,11 +28,11 @@ public class OriginalItem {
 
     // 補助
     ItemStack fortune = setItem(Material.HEART_OF_THE_SEA, Component.text("占い師の心").color(NamedTextColor.WHITE), FORTUNE_LORE, false, 1);
-    ItemStack medium = setItem(Material.GUNPOWDER, Component.text("霊媒師の遺灰"), MEDIUM_LORE, false, 1);
+    public ItemStack medium = setItem(Material.GUNPOWDER, Component.text("霊媒師の遺灰"), MEDIUM_LORE, false, 1);
     ItemStack knight = setItem(Material.GOLDEN_HORSE_ARMOR, Component.text("騎士の祈り"), KNIGHT_LORE, false, 1);
-    ItemStack accomplice = setItem(Material.END_CRYSTAL, Component.text("共犯者の目").color(NamedTextColor.GRAY), ACCOMPLICE_LORE, false, 1);
+    public ItemStack accomplice = setItem(Material.END_CRYSTAL, Component.text("共犯者の目").color(NamedTextColor.GRAY), ACCOMPLICE_LORE, false, 1);
     ItemStack cross = setItem(Material.NETHER_STAR, Component.text("聖なる十字架").color(NamedTextColor.WHITE), CROSS_LORE, false, 1);
-    ItemStack providence = setItem(Material.SUNFLOWER, Component.text("プロビデンスの眼光"), PROVIDENCE_LORE, false, 1);
+    public ItemStack providence = setItem(Material.SUNFLOWER, Component.text("プロビデンスの眼光"), PROVIDENCE_LORE, false, 1);
     ItemStack talisman = setItem(Material.PAPER, Component.text("天啓の呪符"), TALISMAN_LORE, false, 1);
 
     public ItemStack setItem(Material m, Component s, List<Component> lore, Boolean d1, int a){

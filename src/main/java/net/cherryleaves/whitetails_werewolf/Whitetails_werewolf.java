@@ -1,5 +1,6 @@
 package net.cherryleaves.whitetails_werewolf;
 
+import net.cherryleaves.whitetails_werewolf.item_config.*;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
@@ -21,6 +22,10 @@ public final class Whitetails_werewolf extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(System.getInstance(), this);
         getServer().getPluginManager().registerEvents(new GUI(), this);
         getServer().getPluginManager().registerEvents(new player_sign(), this);
+        // アイテム関連。どこかにまとめられないだろうか...
+        getServer().getPluginManager().registerEvents(new medium(), this);
+        getServer().getPluginManager().registerEvents(new accomplice(), this);
+        getServer().getPluginManager().registerEvents(new providence(), this);
         new systemTimer(this);
         new message().println();
         new Command().AlliRegister();

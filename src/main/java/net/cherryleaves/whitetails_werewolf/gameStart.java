@@ -86,7 +86,6 @@ public class gameStart {
         Team teamV = scoreboardV.registerNewTeam("villager");
         Team teamVP = scoreboardVP.registerNewTeam("vampire");
         for (Player playerACC : Bukkit.getOnlinePlayers()) {
-            // playerACC.sendMessage("貴方を村人チームに追加しました");
             teamV.addEntry(playerACC.getName());
         }
         // 人狼選択部分
@@ -134,8 +133,6 @@ public class gameStart {
         systemTimer timer = systemTimer.getInstance();
         timer.startTimer();
         for (Player p : Bukkit.getOnlinePlayers()) {
-            
-            ALLPlayerCount++;
             p.setGameMode(GameMode.ADVENTURE);
             Objects.requireNonNull(p.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(40.0);
             p.setHealth(40.0);

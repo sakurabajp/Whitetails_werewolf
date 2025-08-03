@@ -64,7 +64,7 @@ public class System implements Listener {
     }
 
     public void changeNight() {
-        spawnSkeletonAtRandomStand(10);
+        spawnSkeletonAtRandomStand(50);
         world.setTime(18000); // midnight = 18000 ticks
         systemTimer.getInstance().currentTime = 0;
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -75,7 +75,6 @@ public class System implements Listener {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendTitlePart(TitlePart.TITLE, Component.text(" 夜 ").color(TextColor.color(HSVLike.fromRGB(10, 10, 200))).decorate(TextDecoration.BOLD));
             player.sendTitlePart(TitlePart.SUBTITLE, Component.text("- " + Day + "日目 -").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decorate(TextDecoration.ITALIC));
-            player.sendMessage(Night + "←を有効にしたはず！");
         }
     }
 

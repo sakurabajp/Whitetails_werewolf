@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.title.TitlePart;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -124,7 +125,8 @@ public class Command {
                     return true;
                 }
                 else {
-                    new player_sign().getSign(p);
+                    player_sign playerSign = new player_sign(Whitetails_werewolf.getPlugin(Whitetails_werewolf.class));
+                    playerSign.getSign(p);
                     return true;
                 }
             }

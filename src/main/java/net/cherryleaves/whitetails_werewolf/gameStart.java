@@ -13,9 +13,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
+import org.bukkit.scoreboard.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +45,15 @@ public class gameStart {
         }
         player.sendTitlePart(TitlePart.TITLE, roleText);
         player.sendTitlePart(TitlePart.SUBTITLE, Component.text("GAME START").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decorate(TextDecoration.UNDERLINED));
+    }
+
+    private void createPlayerScoreboard(Player player) {
+        Scoreboard board = Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard();
+        Objective objective = board.registerNewObjective("knight_check", Criteria.DUMMY, Component.text(" ").color(NamedTextColor.WHITE), RenderType.INTEGER);
+        Objective objective2 = board.registerNewObjective("fortune", Criteria.DUMMY, Component.text(" ").color(NamedTextColor.WHITE), RenderType.INTEGER);
+        player.setScoreboard(board);
+        objective.getScore(player.getName()).setScore(0);
+        objective2.getScore(player.getName()).setScore(0);
     }
 
 
@@ -127,6 +134,7 @@ public class gameStart {
         systemTimer timer = systemTimer.getInstance();
         timer.startTimer();
         for (Player p : Bukkit.getOnlinePlayers()) {
+            
             ALLPlayerCount++;
             p.setGameMode(GameMode.ADVENTURE);
             Objects.requireNonNull(p.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(40.0);
@@ -142,6 +150,7 @@ public class gameStart {
 
             // 改良されたタイトル表示を呼び出す
             showPlayerRoleTitle(p, teamV, teamW, teamM, teamVP);
+            createPlayerScoreboard(p);
 
             // Component APIを使用したメッセージ送信
             p.sendMessage(Component.text("---------------------------------------------").color(NamedTextColor.DARK_GREEN).decorate(TextDecoration.BOLD));

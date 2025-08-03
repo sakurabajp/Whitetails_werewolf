@@ -67,7 +67,11 @@ public class System implements Listener {
         spawnSkeletonAtRandomStand(10);
         world.setTime(18000); // midnight = 18000 ticks
         systemTimer.getInstance().currentTime = 0;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Objects.requireNonNull(player.getScoreboard().getObjective("knight_check")).getScore(player.getName()).setScore(0);
+        }
         Night = true;
+        
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendTitlePart(TitlePart.TITLE, Component.text(" 夜 ").color(TextColor.color(HSVLike.fromRGB(10, 10, 200))).decorate(TextDecoration.BOLD));
             player.sendTitlePart(TitlePart.SUBTITLE, Component.text("- " + Day + "日目 -").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decorate(TextDecoration.ITALIC));

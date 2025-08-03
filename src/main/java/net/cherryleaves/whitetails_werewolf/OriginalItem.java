@@ -27,11 +27,11 @@ public class OriginalItem {
     ItemStack wolf_axe = setItem(Material.STONE_AXE, Component.text("人狼の斧").color(NamedTextColor.RED), AXE_LORE, true, 1);
 
     // 補助
-    ItemStack fortune = setItem(Material.HEART_OF_THE_SEA, Component.text("占い師の心").color(NamedTextColor.WHITE), FORTUNE_LORE, false, 1);
+    public ItemStack fortune = setItem(Material.HEART_OF_THE_SEA, Component.text("占い師の心").color(NamedTextColor.WHITE), FORTUNE_LORE, false, 1);
     public ItemStack medium = setItem(Material.GUNPOWDER, Component.text("霊媒師の遺灰"), MEDIUM_LORE, false, 1);
-    ItemStack knight = setItem(Material.GOLDEN_HORSE_ARMOR, Component.text("騎士の祈り"), KNIGHT_LORE, false, 1);
+    public ItemStack knight = setItem(Material.GOLDEN_HORSE_ARMOR, Component.text("騎士の祈り"), KNIGHT_LORE, false, 1);
     public ItemStack accomplice = setItem(Material.END_CRYSTAL, Component.text("共犯者の目").color(NamedTextColor.GRAY), ACCOMPLICE_LORE, false, 1);
-    ItemStack cross = setItem(Material.NETHER_STAR, Component.text("聖なる十字架").color(NamedTextColor.WHITE), CROSS_LORE, false, 1);
+    public ItemStack cross = setItem(Material.NETHER_STAR, Component.text("聖なる十字架").color(NamedTextColor.WHITE), CROSS_LORE, false, 1);
     public ItemStack providence = setItem(Material.SUNFLOWER, Component.text("プロビデンスの眼光"), PROVIDENCE_LORE, false, 1);
     ItemStack talisman = setItem(Material.PAPER, Component.text("天啓の呪符"), TALISMAN_LORE, false, 1);
 

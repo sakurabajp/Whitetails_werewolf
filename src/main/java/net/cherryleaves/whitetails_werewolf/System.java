@@ -1,5 +1,11 @@
 package net.cherryleaves.whitetails_werewolf;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.title.TitlePart;
+import net.kyori.adventure.util.HSVLike;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -8,6 +14,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +23,26 @@ import java.util.Objects;
 import java.util.Random;
 
 public class System implements Listener {
+
+    // シングルトンインスタンスを追加
+    private static System instance;
+
+    // シングルトンを取得するためのメソッド
+    public static System getInstance() {
+        if (instance == null) {
+            instance = new System();
+        }
+        return instance;
+    }
+
+    // コンストラクタをprivateに変更
+    private System() {
+        // 初期化処理
+    }
+
+    public boolean GameNow = false;
+    public int Day = 1;
+    public boolean Night = false;
 
     @EventHandler
     public void onPlayerShootArrow(EntityShootBowEvent event) {
@@ -38,14 +66,28 @@ public class System implements Listener {
     public void changeNight() {
         spawnSkeletonAtRandomStand(10);
         world.setTime(18000); // midnight = 18000 ticks
+        systemTimer.getInstance().currentTime = 0;
+        Night = true;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.sendTitlePart(TitlePart.TITLE, Component.text(" 夜 ").color(TextColor.color(HSVLike.fromRGB(10, 10, 200))).decorate(TextDecoration.BOLD));
+            player.sendTitlePart(TitlePart.SUBTITLE, Component.text("- " + Day + "日目 -").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decorate(TextDecoration.ITALIC));
+            player.sendMessage(Night + "←を有効にしたはず！");
+        }
     }
 
     public void changeDay() {
+        Day++;
+        systemTimer.getInstance().currentTime = 0;
+        Night = false;
         world.getEntities().stream()
                 .filter(entity -> entity instanceof Skeleton)
                 .filter(entity -> entity.getScoreboardTags().contains("game_skeleton"))
                 .forEach(Entity::remove);
         world.setTime(6000); // midnight = 18000 ticks
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.sendTitlePart(TitlePart.TITLE, Component.text(" 昼 ").color(TextColor.color(HSVLike.fromRGB(250, 140, 0))).decorate(TextDecoration.BOLD));
+            player.sendTitlePart(TitlePart.SUBTITLE, Component.text("- " + Day + "日目 -").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decorate(TextDecoration.ITALIC));
+        }
     }
 
     public void spawnSkeletonAtRandomStand(int count) {
@@ -108,9 +150,43 @@ public class System implements Listener {
                     }
                 }
             }
-            else if (event.getEntity() instanceof Player player) {
-                player.setGameMode(GameMode.SPECTATOR);
-                // ここに役職ごとの処理を入れる
+        }
+        if (event.getEntity() instanceof Player p) {
+            p.setGameMode(GameMode.SPECTATOR);
+            p.sendMessage("あなたは " + event.getEntity().getKiller() + " に殺されました");
+            Scoreboard scoreboard = Objects.requireNonNull(Bukkit.getScoreboardManager()).getMainScoreboard();
+            Team teamW = scoreboard.getTeam("wolf");
+            Team teamM = scoreboard.getTeam("madman");
+            Team teamV = scoreboard.getTeam("villager");
+            Team teamVP = scoreboard.getTeam("vampire");
+            new gameStart().ALLPlayerCount -= 1;
+            if(Objects.requireNonNull(teamW).hasEntry(p.getName())){
+                new gameStart().WolfCount -= 1;
+            }
+            if(Objects.requireNonNull(teamM).hasEntry(p.getName())){
+                new gameStart().MadmanCount -= 1;
+            }
+            if(Objects.requireNonNull(teamVP).hasEntry(p.getName())){
+                new gameStart().VampireCount -= 1;
+            }
+            if(Objects.requireNonNull(teamV).hasEntry(p.getName())){
+                new gameStart().VillagerCount -= 1;
+            }
+            if(new gameStart().ALLPlayerCount - new gameStart().VampireCount - new gameStart().WolfCount - new gameStart().MadmanCount == 0){
+                if(new gameStart().VampireCount >= 1){
+                    new gameEnd().VampireWin();
+                }
+                else if(new gameStart().VampireCount <= 0){
+                    new gameEnd().WolfWin();
+                }
+            }
+            else if(new gameStart().ALLPlayerCount - new gameStart().VampireCount - new gameStart().VillagerCount - new gameStart().MadmanCount == 0){
+                if(new gameStart().VampireCount >= 1){
+                    new gameEnd().VampireWin();
+                }
+                else if(new gameStart().VampireCount <= 0){
+                    new gameEnd().VillagerWin();
+                }
             }
         }
     }

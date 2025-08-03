@@ -46,6 +46,8 @@ public class SetArmorStand implements Listener {
                         armorStand.customName(Component.text("スケルトンの出現場所の候補").color(NamedTextColor.GOLD));
                         armorStand.addScoreboardTag("skeleton_spawn");
                         armorStand.setInvulnerable(true);
+                        armorStand.setMarker(true);
+                        armorStand.setVisible(true);
                         e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_DISPENSER_DISPENSE, 1.0f, 1.0f);
                     });
                 }

@@ -9,7 +9,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Skeleton;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
@@ -26,8 +29,9 @@ public class gameStart {
     int BeforeMadmanPlayerCount = 0;
     int BeforeVampirePlayerCount = 0;
     int VillagerCount;
+    int WolfCount;
     int MadmanCount;
-    int AfterVampireCount;
+    int VampireCount;
     int ALLPlayerCount;
 
     private void showPlayerRoleTitle(Player player, Team teamV, Team teamW, Team teamM, Team teamVP) {
@@ -116,7 +120,14 @@ public class gameStart {
             teamVP.addEntry(VampireTeamPlayers.getName()); // 一貫してaddEntryを使用
         }
 
-        new System().changeGameRule();
+        System.getInstance().GameNow = true;
+        System.getInstance().changeGameRule();
+        System.getInstance().Day = 1;
+        System.getInstance().Night = false;
+        Objects.requireNonNull(Bukkit.getWorld("world")).setTime(6000);
+        systemTimer.getInstance().currentTime = 80;
+        systemTimer timer = systemTimer.getInstance();
+        timer.startTimer();
         for (Player p : Bukkit.getOnlinePlayers()) {
             ALLPlayerCount++;
             p.setGameMode(GameMode.ADVENTURE);
@@ -189,8 +200,14 @@ public class gameStart {
             p.removeScoreboardTag("Admin1");
             p.setStatistic(org.bukkit.Statistic.DEATHS, 0);
         }
-        VillagerCount = (ALLPlayerCount - BeforeWolfPlayerCount -BeforeMadmanPlayerCount - BeforeVampirePlayerCount);
-        MadmanCount = BeforeMadmanPlayerCount;
+        WolfCount = teamW.getEntries().size();
+        MadmanCount = teamM.getEntries().size();
+        VampireCount = teamVP.getEntries().size();
+        VillagerCount = teamV.getEntries().size();
+        Objects.requireNonNull(Bukkit.getWorld("world")).getEntities().stream()
+                .filter(entity -> entity instanceof ArmorStand)
+                .filter(entity -> entity.getScoreboardTags().contains("skeleton_spawn"))
+                .forEach(entity -> ((ArmorStand) entity).setVisible(false));
     }
 
 }
